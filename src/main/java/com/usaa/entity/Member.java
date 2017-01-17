@@ -1,10 +1,14 @@
 package com.usaa.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Created by rustidog
  */
+@Document
 public class Member {
+	@Id
 	public String id;
 	public String firstName;
 	public String lastName;

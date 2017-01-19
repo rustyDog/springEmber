@@ -17,12 +17,14 @@ public class SearchController {
 	@Autowired
 	private MemberRepository repo;
 
-    @RequestMapping(value="/findByMemberNumber/{memberNum}", method=RequestMethod.GET)
+	@CrossOrigin(origins="http://localhost:4200")
+    @RequestMapping(value="/members/{memberNum}", method=RequestMethod.GET)
     public Member findByMemberNumber(@PathVariable String memberNum) {
         Member member = repo.findOne(memberNum); //repo.findByMemberNumber(memberNum);
         return member;
     }
     
+    @CrossOrigin(origins="http://localhost:4200")
     @RequestMapping("/findAll")
     public List<Member> findAll() {
     	return repo.findAll();

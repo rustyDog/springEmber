@@ -37,7 +37,7 @@ public class Member {
 	public String maritalStatus;
 	public String employer;
 	public String occupation;
-	public List<Military> military;
+	public Military military;
 	public List<Identification> identification;
 	public List<Product> product;
 	
@@ -47,7 +47,7 @@ public class Member {
 	public Member(String id, String firstName, String lastName, String dob, String ssn, 
 			String email, String gender, String streetAddress, String state, String homePhone,
 			String city, String country, String countryCode, String maritalStatus, String employer,
-			String occupation, List<Military> military, List<Identification> identifications, List<Product> products){
+			String occupation, Military military, List<Identification> identifications, List<Product> products){
 		this.memberNumber = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

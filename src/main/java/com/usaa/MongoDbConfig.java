@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.bson.BSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.mongo.MongoClientDependsOnBeanFactoryPostProcessor;
@@ -79,20 +81,30 @@ public class MongoDbConfig {
 
 	@Bean
 	public MongoTemplate mongoTemplate() throws Exception {
-		return new MongoTemplate(mongoDbFactory());
+		MongoTemplate template = new MongoTemplate(mongoDbFactory());
+		load(template);
+		return template;
 	}
-	
-	public void load(){
-		File file = new File("/userData.json");
+
+	public void load(MongoTemplate template){
+		ClassLoader	classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource("userData.json").getFile());
+		log("Loaded json file: ");
 		try {
 			FileReader reader = new FileReader(file);
 			BufferedReader bReader = new BufferedReader(reader);
+			log("loaded buffered reader");
 			String line;
 			List<DBObject> list = new ArrayList<DBObject>();
+			int count = 0;
 			while ((line=bReader.readLine())!=null) {
+				log(line);
+				count++;
 				list.add((DBObject)JSON.parse(line));
+				log(count+" added to list");
 			}
-			mongoTemplate().getCollection("memberData").insert(list);
+			template.getCollection("memberData").insert(list);
+			log("meberData loaded with data");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -100,6 +112,10 @@ public class MongoDbConfig {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void log(String str){
+		System.out.println(str);
 	}
 
 }
